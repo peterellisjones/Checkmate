@@ -79,11 +79,11 @@ void Tests::parser_can_parse_fen(){
     
     for(int i = 0; i < 64; i++){
         assert(board[i] == expected_board_A[i]);
-        assert(board.half_move_count() == 0);
-        assert(board.castling_rights() == FULL_CASTLING_RIGHTS);
-        assert(board.ep_square() == NULL_SQUARE);
-        assert(board.side_to_move() == WHITE);
     }
+    assert(board.half_move_count() == 0);
+    assert(board.castling_rights() == FULL_CASTLING_RIGHTS);
+    assert(board.ep_square() == NULL_SQUARE);
+    assert(board.side_to_move() == WHITE);
     
     fen = "rnbqkbnr/pppppppp/8/8/P7/8/RPPPPPPP/1NBQKBNR b Qkq a3 5 2";
     U8 expected_board_B[64] = {
@@ -100,9 +100,9 @@ void Tests::parser_can_parse_fen(){
     
     for(int i = 0; i < 64; i++){
         assert(board[i] == expected_board_B[i]);
-        assert(board.half_move_count() == 5);
-        assert(board.castling_rights() == WHITE_QUEEN_SIDE | BLACK_KING_SIDE | BLACK_QUEEN_SIDE);
-        assert(board.ep_square() == A3);
-        assert(board.side_to_move() == BLACK);
     }
+    assert(board.half_move_count() == 5);
+    assert(board.castling_rights() == WHITE_QUEEN_SIDE | BLACK_KING_SIDE | BLACK_QUEEN_SIDE);
+    assert(board.ep_square() == A3);
+    assert(board.side_to_move() == BLACK);
 }
