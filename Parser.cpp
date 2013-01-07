@@ -10,7 +10,7 @@
 class Board Parser::parse_fen(string fen){
     Board board = Board();
     
-    int len = string::size(fen);   
+    int len = fen.length();   
     
     int pos = 0; // position in string
     int square = A1;

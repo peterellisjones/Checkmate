@@ -12,9 +12,7 @@
 #include <string>
 #include <assert.h>
 
-using std::cout;
-using std::endl;
-using std::string;
+using namespace std;
 
 typedef unsigned long long U64;
 typedef unsigned char U8;

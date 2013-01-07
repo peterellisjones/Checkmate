@@ -31,7 +31,7 @@ public:
     void add_piece(U8 piece, int square);
     void remove_piece(int square);
     void reset();
-    U8 operator[](const int square);
+    U8 operator[](const int square); // return piece on that square
     U64 bitboard(const int type);
     U8 half_move_count(){ return irrev.half_move_count; };
     U8 castling_rights(){ return irrev.castling_rights; };
