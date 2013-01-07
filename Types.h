@@ -20,7 +20,6 @@ typedef unsigned char U8;
 #include "Constants.h"
 #include "Board.h"
 #include "Parser.h"
-#include "Tests.h"
 #include "Output.h"
 
 #endif	/* TYPES_H */
