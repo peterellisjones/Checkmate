@@ -8,7 +8,8 @@
 #ifndef PARSER_H
 #define	PARSER_H
 
-#include "Types.h"
+#include "Common.h"
+#include "Board.h"
 
 class Parser {
 public:

@@ -8,19 +8,9 @@
 #ifndef TYPES_H
 #define	TYPES_H
 
-#include <iostream>
-#include <string>
-#include <assert.h>
-
-using namespace std;
-
-typedef unsigned long long U64;
-typedef unsigned char U8;
-
-#include "Constants.h"
-#include "Board.h"
-#include "Parser.h"
-#include "Output.h"
+typedef unsigned long long U64; // used for bitboards
+typedef unsigned char U8;       // used for pieces
+typedef unsigned int U32;       // used for moves
 
 #endif	/* TYPES_H */
 

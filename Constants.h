@@ -8,7 +8,7 @@
 #ifndef CONSTANTS_H
 #define	CONSTANTS_H
 
-#include "Types.h"
+#include "Common.h"
 
 // PIECES
 
@@ -122,6 +122,28 @@ const int G8 = 62;
 const int H8 = 63;
 
 const int NULL_SQUARE = 64;
+
+// BITBOARD FILES
+
+const U64 FILE_A = 0x0101010101010101ULL << 0;
+const U64 FILE_B = 0x0101010101010101ULL << 1;
+const U64 FILE_C = 0x0101010101010101ULL << 2;
+const U64 FILE_D = 0x0101010101010101ULL << 3;
+const U64 FILE_E = 0x0101010101010101ULL << 4;
+const U64 FILE_F = 0x0101010101010101ULL << 5;
+const U64 FILE_G = 0x0101010101010101ULL << 6;
+const U64 FILE_H = 0x0101010101010101ULL << 7;
+
+// BITBOARD ROWS
+
+const U64 ROW_1 = 0xFFULL << (0*8);
+const U64 ROW_2 = 0xFFULL << (1*8);
+const U64 ROW_3 = 0xFFULL << (2*8);
+const U64 ROW_4 = 0xFFULL << (3*8);
+const U64 ROW_5 = 0xFFULL << (4*8);
+const U64 ROW_6 = 0xFFULL << (5*8);
+const U64 ROW_7 = 0xFFULL << (6*8);
+const U64 ROW_8 = 0xFFULL << (7*8);
 
 #endif	/* CONSTANTS_H */
 

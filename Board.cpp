@@ -16,6 +16,11 @@ bool Board::is_blank(){
 }
 
 void Board::add_piece(U8 piece, int square){
+#ifdef DEBUG
+    assert(is_valid_piece(piece));
+    assert(is_valid_square(square));
+    assert(board_array[square] == EMPTY);
+#endif
     board_array[square] = piece;
     U64 bitboard = 1ULL << square;
     bitboards[piece & 1] |= bitboard;
@@ -23,6 +28,10 @@ void Board::add_piece(U8 piece, int square){
 }
 
 void Board::remove_piece(int square){
+#ifdef DEBUG
+    assert(is_valid_square(square));
+    assert(board_array[square] != EMPTY);
+#endif
     U8 piece = board_array[square];
     board_array[square] = EMPTY;
     U64 bitboard = ~(1ULL << square);
@@ -43,10 +52,16 @@ void Board::reset(){
     irrev.side_to_move = WHITE;
 }
 
-U8 Board::operator [](const int square){
+U8 Board::operator [](const int square) const{
+#ifdef DEBUG
+    assert(is_valid_square(square));
+#endif
     return board_array[square];
 }
 
-U64 Board::bitboard(const int type){
+U64 Board::bitboard(const int type) const{
+#ifdef DEBUG
+    assert(type >= 0 && type <= BLACK_QUEEN);
+#endif
     return bitboards[type];
 }

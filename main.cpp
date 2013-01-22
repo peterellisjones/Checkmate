@@ -15,6 +15,7 @@ using namespace std;
  */
 int main(int argc, char** argv) {
     
+    //MoveGenerator::generate_move_lookup_tables();
     Tests::run();
 
     return 0;
