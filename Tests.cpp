@@ -230,8 +230,6 @@ void Tests::move_generator_can_generate_pawn_pushes(){
     // put 3 pieces in random places
     board = Board();
     board.add_piece(WHITE_PAWN, A3);
-    // put one piece on row 8
-    board.add_piece(WHITE_PAWN, B8);
     board.add_piece(WHITE_PAWN, C6);
     // put black piece in front of piece at C6
     board.add_piece(BLACK_PAWN, C7);
@@ -245,7 +243,6 @@ void Tests::move_generator_can_generate_pawn_pushes(){
     // repeat above with black pieces
     board = Board();
     board.add_piece(BLACK_PAWN, A6);
-    board.add_piece(BLACK_PAWN, B1);
     board.add_piece(BLACK_PAWN, C3);
     board.add_piece(WHITE_PAWN, C2);
     list.reset();

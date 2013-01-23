@@ -12,7 +12,7 @@ string static is_valid_move_err(U32 move, const class Board &board);
 
 bool is_valid_move(U32 move, const class Board &board){
     string error = is_valid_move_err(move, board);
-    if(string == "") return true;
+    if(error == "") return true;
     cerr << "INVALID MOVE: " << error << endl;
     return false;
 }

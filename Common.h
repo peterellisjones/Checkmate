@@ -32,7 +32,7 @@ U64 inline circular_left_shift(U64 target, int shift){
     return (target << shift) | (target >> (64-shift));
 }
 
-bool inline is_valid_piece(U8 piece){ return (piece >= WHITE_PAWN) && (piece <= BLACK_QUEEN); }
+bool inline is_valid_piece(U8 piece){ return (piece >= WHITE_PAWN) && (piece <= BLACK_KING); }
 bool inline is_valid_square(int square){ return (square >= 0) && (square <= 64); }
 bool is_valid_move(U32 move, const class Board &board);
 

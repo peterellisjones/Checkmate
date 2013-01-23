@@ -47,7 +47,7 @@ const U64 KING_LOOKUP_TABLE[64] = {
 
 
 void MoveGenerator::add_pawn_pushes(class MoveList &list, const class Board &board, const int side){
-    const int diffs[2]                   = {8, 56};
+    const int diffs[2]                   = {8, 64-8};
     const U64 promotions_mask[2]         = {ROW_8, ROW_1};
     const U64 start_row_plus_one_mask[2] = {ROW_3, ROW_6};
     U64 pushes, double_pushes, promotions, pawns, free_squares;
@@ -56,11 +56,11 @@ void MoveGenerator::add_pawn_pushes(class MoveList &list, const class Board &boa
     pawns = board.bitboards[side | PAWN];
     free_squares = ~(board.bitboards[WHITE] | board.bitboards[BLACK]);
     // ADD SINGLE PUSHES
-    pushes = circular_left_shift(pawns, diff) & free_squares & (~promotions_mask[!side]);
+    pushes = circular_left_shift(pawns, diff) & free_squares;
     add_moves_with_diff(diff, pushes & (~promotions_mask[side]), list, board, NO_FLAGS);
     // ADD PROMOTIONS
     promotions = pushes & promotions_mask[side];
-    add_promotions_with_diff(diff, promotions, list, board, side << 24);
+    add_promotions_with_diff(diff, promotions, list, board, side);
     // ADD DOUBLE PUSHES
     double_pushes = circular_left_shift(pushes & start_row_plus_one_mask[side], diff) & free_squares;
     add_moves_with_diff(diff+diff, double_pushes, list, board, PAWN_DOUBLE_PUSH);
@@ -74,27 +74,31 @@ void MoveGenerator::add_pawn_attacks(class MoveList &list, const class Board &bo
     
     pawns = board.bitboards[side | PAWN];
     enemy = board.bitboards[!side];
+    
     // CALCULATE ATTACKS FOR LEFT, RIGHT
     for (int dir = 0; dir < 2; dir++){
         int diff =  diffs[dir][side];
         targets = circular_left_shift(pawns, diff) & file_mask[dir];
+        
         // ADD ATTACKS
         attacks = enemy & targets;
         add_moves_with_diff(diff, attacks & (~promotions_mask[side]), list, board, NO_FLAGS);
+        
         // ADD EP ATTACKS
         ep_attacks = targets & (1ULL << board.irrev.ep_square);
-        add_moves_with_diff(diff, ep_attacks, list, board, EP_CAPTURE | ((PAWN|(!side)) << 16));
+        add_moves_with_diff(diff, ep_attacks, list, board, EP_CAPTURE | ((PAWN|(!side)) << 24));
+        
         // ADD PROMOTION ATTACKS
         promotions = attacks & promotions_mask[side];
-        add_promotions_with_diff(diff, promotions, list, board, side << 24);
+        add_promotions_with_diff(diff, promotions, list, board, side);
     }
 }
 
 void MoveGenerator::add_moves(U8 from, U64 targets, class MoveList& list, const class Board &board, const U32 flags){
     while(targets){
-        U8 to = bit_scan_forward(targets);
-        U8 capture = board[to];
-        U32 move = from | (to << 8) | (capture << 16) | flags;
+        U32 to = bit_scan_forward(targets);
+        U32 capture = board[to];
+        U32 move = from | (to << 8) | (capture << 24) | flags;
         list.push(move);
         targets &= targets - 1;
     }
@@ -103,24 +107,25 @@ void MoveGenerator::add_moves(U8 from, U64 targets, class MoveList& list, const 
 void MoveGenerator::add_moves_with_diff(int diff, U64 targets, class MoveList& list, const class Board &board, const U32 flags){
     while(targets){
         U32 to = bit_scan_forward(targets);
-        U32 from = (to - diff) % 64;
-        U8 capture = board[to];
-        U32 move = from | (to << 8) | (capture << 16) | flags;
+        U32 from = ((U32)(to - diff)) % 64;
+        U32 capture = board[to];
+        U32 move = from | (to << 8) | flags | (capture << 24);
         list.push(move);
         targets &= targets - 1;
     }
 }
 
-void MoveGenerator::add_promotions_with_diff(int diff, U64 targets, class MoveList& list, const class Board &board, const U32 flags){
+void MoveGenerator::add_promotions_with_diff(int diff, U64 targets, class MoveList& list, const class Board &board, const U32 side){
+    U32 flags = side << 16; // move to third byte
     while(targets){
         U32 to = bit_scan_forward(targets);
-        U32 from = (to - diff) % 64;
-        U8 capture = board[to];
-        U32 move = from | (to << 8) | (capture << 16) | flags;
-        list.push(move | (KNIGHT << 24));
-        list.push(move | (BISHOP << 24));
-        list.push(move | (ROOK   << 24));
-        list.push(move | (QUEEN  << 24));
+        U32 from = ((U32)(to - diff)) % 64;
+        U32 capture = board[to];
+        U32 move = from | (to << 8) | flags | (capture << 24) ;
+        list.push(move | (KNIGHT << 16));
+        list.push(move | (BISHOP << 16));
+        list.push(move | (ROOK   << 16));
+        list.push(move | (QUEEN  << 16));
         targets &= targets - 1;
     }
 }
